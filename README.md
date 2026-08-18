@@ -11,6 +11,7 @@ JSON block as its **only durable state**.
 - restart recovery without a local database or durable application files
 - live storage and latency evidence at `/_omnira/storage`
 - a self-contained Go binary with embedded HTML, CSS, and JavaScript
+- an embedded Mozilla CA pool for verified TLS inside Omnira's native sandbox
 
 ## Deliberate baseline limits
 

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/rand"
+	"crypto/tls"
 	"embed"
 	"encoding/base64"
 	"encoding/hex"
@@ -18,6 +19,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/certifi/gocertifi"
 )
 
 const (
@@ -135,12 +138,21 @@ func newEntityClient(baseURL, apiKey, namespace, ownerID string, metrics *servic
 	if _, err := strconv.ParseUint(ownerID, 10, 64); err != nil {
 		return nil, errors.New("Entity Service owner ID must be a positive integer")
 	}
+	// Omnira's native payload sandbox has no reliable access to the host's
+	// certificate verifier. Carry Mozilla's CA roots inside the binary so TLS
+	// remains fully verified after the executable is unlinked from disk.
+	rootCAs, err := gocertifi.CACerts()
+	if err != nil {
+		return nil, fmt.Errorf("load embedded CA roots: %w", err)
+	}
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.TLSClientConfig = &tls.Config{RootCAs: rootCAs, MinVersion: tls.VersionTLS12}
 	return &entityClient{
 		baseURL:     baseURL,
 		apiKey:      strings.TrimSpace(apiKey),
 		namespace:   strings.TrimSpace(namespace),
 		ownerID:     ownerID,
-		httpClient:  &http.Client{Timeout: entityRequestTimeout},
+		httpClient:  &http.Client{Timeout: entityRequestTimeout, Transport: transport},
 		metrics:     metrics,
 		maxAttempts: 6,
 	}, nil
