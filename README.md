@@ -4,6 +4,11 @@ GoodMarket is a deliberately small marketplace used to measure Omnira Entity
 Service before adapting heavier applications. It uses one generation-protected
 JSON block as its **only durable state**.
 
+Live: <https://goodmarket-k4u67azzg5.app.omnira.dev/>
+
+The measured concurrency, restart, publishing, and security findings are in
+[LIMITATIONS.md](./LIMITATIONS.md).
+
 ## What it proves
 
 - listing create, read, update, and delete through Entity Service
