@@ -150,6 +150,11 @@ async function showDiagnostics() {
 }
 
 document.querySelector("#sellButton").addEventListener("click", () => sellDialog.showModal());
+document.querySelector("#cancelSell").addEventListener("click", () => {
+  form.reset();
+  document.querySelector("#formMessage").textContent = "";
+  sellDialog.close();
+});
 document.querySelector("#diagnosticsButton").addEventListener("click", showDiagnostics);
 document.querySelector("#openDiagnostics").addEventListener("click", showDiagnostics);
 document.querySelector("#closeDiagnostics").addEventListener("click", () => diagnosticsDialog.close());
