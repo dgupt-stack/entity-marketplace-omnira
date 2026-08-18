@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A small marketplace persisted entirely in Omnira Entity Service.">
+    <title>GoodMarket — useful things, nearby</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="GoodMarket home">
+        <span class="brand-mark">G</span>
+        <span>GoodMarket</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <button class="text-button" id="diagnosticsButton">Entity status</button>
+        <button class="primary-button" id="sellButton">Sell something</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">A smaller, friendlier marketplace</p>
+          <h1>Useful things,<br><em>ready for another life.</em></h1>
+          <p class="lede">Discover well-kept goods from independent sellers. Every listing in this experiment lives in Omnira Entity Service—nowhere else.</p>
+          <div class="hero-actions">
+            <a href="#market" class="primary-link">Browse the market <span>↓</span></a>
+            <span class="live-pill"><i></i><span id="liveStatus">Checking Entity Service</span></span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orb orb-one"></div>
+          <div class="orb orb-two"></div>
+          <div class="object-card object-camera"><span>◉</span><small>FIELD<br>CAMERA</small></div>
+          <div class="object-card object-cup"><span>∪</span><small>STONE<br>WARE</small></div>
+          <div class="hero-stamp">ENTITY<br>ONLY<br><b>01</b></div>
+        </div>
+      </section>
+
+      <section class="market-section" id="market">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Fresh finds</p>
+            <h2>The market</h2>
+          </div>
+          <p id="marketSummary">Loading listings…</p>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="Search objects, sellers, categories" autocomplete="off">
+          </label>
+          <div class="filters" id="filters" aria-label="Listing filters"></div>
+        </div>
+
+        <div class="listing-grid" id="listingGrid" aria-live="polite"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <span>◇</span>
+          <h3>No finds here yet</h3>
+          <p>Try another search or add the first listing.</p>
+        </div>
+      </section>
+
+      <section class="entity-note">
+        <div>
+          <span class="note-number">01</span>
+          <h2>A deliberately small<br>Entity Service experiment.</h2>
+        </div>
+        <div class="note-copy">
+          <p>GoodMarket stores its catalog as one generation-protected JSON block. That makes durability and restart recovery easy to prove—and contention, query, and payload limits easy to measure.</p>
+          <button class="underlined-button" id="openDiagnostics">See the live storage proof →</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="brand"><span class="brand-mark">G</span><span>GoodMarket</span></div>
+      <p>Built to learn the boundary before the heavy work.</p>
+      <p>Strict Entity-only · Omnira</p>
+    </footer>
+
+    <dialog id="sellDialog">
+      <form method="dialog" class="dialog-form" id="sellForm">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">Add to the market</p><h2>Sell something good</h2></div>
+          <button class="close-button" value="cancel" aria-label="Close">×</button>
+        </div>
+        <div class="form-grid">
+          <label class="wide">Title<input name="title" maxlength="80" required placeholder="e.g. Trail binoculars"></label>
+          <label>Price (USD)<input name="price" type="number" min="0" max="1000000" step="0.01" required placeholder="125.00"></label>
+          <label>Category<select name="category"><option>Home</option><option>Cameras</option><option>Music</option><option>Outdoors</option><option>Books</option><option>Other</option></select></label>
+          <label class="wide">Description<textarea name="description" maxlength="500" required placeholder="Condition, history, and what makes it useful"></textarea></label>
+          <label class="wide">Seller<input name="seller" maxlength="60" required placeholder="Your name or shop"></label>
+        </div>
+        <p class="form-message" id="formMessage"></p>
+        <div class="dialog-actions"><button value="cancel" class="secondary-button">Cancel</button><button type="submit" value="default" class="primary-button">Publish listing</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="diagnosticsDialog" class="diagnostics-dialog">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">Live proof</p><h2>Entity Service status</h2></div>
+        <button class="close-button" id="closeDiagnostics" aria-label="Close">×</button>
+      </div>
+      <div id="diagnosticsContent" class="diagnostics-content"><p>Loading diagnostics…</p></div>
+    </dialog>
+
+    <template id="listingTemplate">
+      <article class="listing-card">
+        <div class="listing-visual"><span class="category-glyph"></span><span class="status-badge"></span></div>
+        <div class="listing-body">
+          <div class="listing-meta"><span class="category"></span><span class="price"></span></div>
+          <h3></h3>
+          <p class="description"></p>
+          <div class="seller-row"><span class="seller-avatar"></span><span class="seller-name"></span><button class="delete-button" aria-label="Delete listing">Remove</button></div>
+        </div>
+      </article>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
